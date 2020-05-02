@@ -1,26 +1,61 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import DatePicker from "react-datepicker";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+import "react-datepicker/dist/react-datepicker.css";
+
+import setHours from "date-fns/setMinutes";
+import setMinutes from "date-fns/setMinutes";
+
+
+// function App() {
+//   const [startDate, setStartDate] = useState(new Date());
+
+//   return (
+//     <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
+//   );
+// }
+
+// const App = () => {
+
+//   const [startDate, setStartDate] = useState(
+//     setHours(setMinutes(new Date(), 30), 16)
+//   );
+
+//   return (
+//     <DatePicker
+//       selected={startDate}
+//       onChange={date => setStartDate(date)}
+//       showTimeSelect
+//       excludeTimes={[
+//         setHours(setMinutes(new Date(), 0), 17),
+//         setHours(setMinutes(new Date(), 30), 18),
+//         setHours(setMinutes(new Date(), 30), 19),
+//         setHours(setMinutes(new Date(), 30), 17)
+//       ]}
+//       dateFormat="MMMM d, yyyy h:mm aa"
+//     />
+//   );
+// };
+
+const App = () => {
+  const [startDate, setStartDate] = useState(
+    setHours(setMinutes(new Date(), 30), 16)
   );
-}
+  return (
+    <DatePicker
+      selected={startDate}
+      onChange={date => setStartDate(date)}
+      showTimeSelect
+      includeTimes={[
+        setHours(setMinutes(new Date(), 0), 17),
+        setHours(setMinutes(new Date(), 30), 18),
+        setHours(setMinutes(new Date(), 30), 19),
+        setHours(setMinutes(new Date(), 30), 17)
+      ]}
+      dateFormat="MMMM d, yyyy h:mm aa"
+    />
+  );
+};
 
 export default App;
