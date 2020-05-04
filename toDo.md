@@ -1,0 +1,1 @@
+[-] Block out unavailable days and hours

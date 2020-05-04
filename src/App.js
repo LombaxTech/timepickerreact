@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import './App.css';
 import TimePicker from './TimePicker'
+import SecondTimePicker from './SecondTimePicker'
 
 const App = () => (
-  <TimePicker />
+  <SecondTimePicker />
 )
 
 export default App;
