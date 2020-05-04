@@ -45,6 +45,7 @@ const TimePicker = () => {
     return (
         <div>
             <DatePicker
+                timeIntervals={60}
                 selected={startDate}
                 onChange={date => {
                     setStartDate(date);
@@ -57,7 +58,7 @@ const TimePicker = () => {
                 dateFormat="MMMM d, yyyy h:mm aa"
             />
             {console.log(startDate)}
-            {/* {console.log(setHours(setMinutes(new Date(), 0), 17))} */}
+            {console.log(setHours(setMinutes(new Date(), 0), 17))}
             <button
                 onClick={submitTime}
             >
@@ -69,6 +70,8 @@ const TimePicker = () => {
 
     // * reference if anything goes wrong
     // onChange={date => setStartDate(date)}
+
+    // Mon May 04 2020 02:00:00 GMT+0100 (British Summer Time)
 
 }
 
