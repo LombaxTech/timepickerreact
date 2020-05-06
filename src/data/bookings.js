@@ -60,19 +60,7 @@ const bookings = [
         }
     },
     {
-        bookingId: 5,
-        studentName: 'Wei Wei',
-        subject: 'EPE',
-        notes: '',
-        timeDetails: {
-            year: 2020,
-            month: 5,
-            day: 11,
-            hour: 17
-        }
-    },
-    {
-        bookingId: 5,
+        bookingId: 6,
         studentName: 'Wei Wei',
         subject: 'EPE',
         notes: '',
@@ -84,7 +72,7 @@ const bookings = [
         }
     },
     {
-        bookingId: 5,
+        bookingId: 7,
         studentName: 'Wei Wei',
         subject: 'EPE',
         notes: '',
