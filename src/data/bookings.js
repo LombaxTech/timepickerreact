@@ -1,6 +1,9 @@
 const bookings = [
     {
         bookingId: 1,
+        studentName: 'Rakib',
+        subject: 'EEE',
+        notes: '',
         timeDetails: {
             year: 2020,
             month: 5,
@@ -10,6 +13,9 @@ const bookings = [
     },
     {
         bookingId: 2,
+        studentName: 'Zac',
+        subject: 'EEE',
+        notes: '',
         timeDetails: {
             year: 2020,
             month: 5,
@@ -19,6 +25,9 @@ const bookings = [
     },
     {
         bookingId: 3,
+        studentName: 'Thomas',
+        subject: 'Space Engineering',
+        notes: '',
         timeDetails: {
             year: 2020,
             month: 5,
@@ -28,6 +37,9 @@ const bookings = [
     },
     {
         bookingId: 4,
+        studentName: 'Wei Wei',
+        subject: 'EPE',
+        notes: '',
         timeDetails: {
             year: 2020,
             month: 5,
@@ -37,6 +49,9 @@ const bookings = [
     },
     {
         bookingId: 5,
+        studentName: 'Wei Wei',
+        subject: 'EPE',
+        notes: '',
         timeDetails: {
             year: 2020,
             month: 5,
@@ -46,6 +61,9 @@ const bookings = [
     },
     {
         bookingId: 5,
+        studentName: 'Wei Wei',
+        subject: 'EPE',
+        notes: '',
         timeDetails: {
             year: 2020,
             month: 5,
@@ -55,6 +73,9 @@ const bookings = [
     },
     {
         bookingId: 5,
+        studentName: 'Wei Wei',
+        subject: 'EPE',
+        notes: '',
         timeDetails: {
             year: 2020,
             month: 5,
@@ -64,6 +85,9 @@ const bookings = [
     },
     {
         bookingId: 5,
+        studentName: 'Wei Wei',
+        subject: 'EPE',
+        notes: '',
         timeDetails: {
             year: 2020,
             month: 5,
