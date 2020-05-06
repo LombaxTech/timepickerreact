@@ -18,10 +18,14 @@ let todaysBookings = bookings.filter(booking => {
     return (booking.timeDetails.day === new Date().getDate())
 })
 
+let getBookings = date => {
+    return bookings.filter(booking => booking.timeDetails.day == date.getDate())
+}
+
 const SecondTimePicker = () => {
 
-    const [startDate, setStartDate] = useState(
-        setHours(setMinutes(new Date(), 30), 16)
+    const [selectedDate, setSelectedDate] = useState(
+        setHours(setMinutes(new Date(), 0), 15)
     );
 
     const [bookedTimes, setBookedTimes] = useState(
@@ -29,10 +33,6 @@ const SecondTimePicker = () => {
             new Date(booking.timeDetails.year, booking.timeDetails.month, booking.timeDetails.day, booking.timeDetails.hour)
         ))
     )
-
-    const getDateDetails = () => {
-        console.log(`Year is: ${startDate.getFullYear()}, Month is: ${startDate.getMonth()}, Day is: ${startDate.getDate()}, Hour is: ${startDate.getHours()}`)
-    }
 
     const isWeekday = date => {
         return date.getDay() != 0 && date.getDay() != 6
@@ -44,7 +44,7 @@ const SecondTimePicker = () => {
         // * bookedHours = getBookedHours(date)
         // * setBookedTimes(bookedHours)
 
-        // * SETTING TUTOR CHOSEN UNAVAILABLE TIMES
+        // * SETTING UNAVAILABLE TIMES
 
         let day = date.getDay();
 
@@ -69,12 +69,26 @@ const SecondTimePicker = () => {
                 break;
         }
 
-        console.log(day)
+        let todaysUnavailableTimes = [];
 
-        setBookedTimes([
-            new Date(2020, 3, 4, 13),
-            new Date(2020, 3, 4, 17)
-        ])
+        if (unavailableTimes[day].length != 0) {
+            todaysUnavailableTimes = unavailableTimes[day].map(time => (
+                new Date(2020, 1, 1, time)
+            ))
+        }
+
+        // console.log(todaysUnavailableTimes);
+        let bookingsForDay = getBookings(date);
+        // console.log(bookingsForDay);
+        let bookedHoursForDay = bookingsForDay.map(booking => new Date(2020, 1, 1, booking.timeDetails.hour))
+        // console.log(bookedHoursForDay);
+
+        setBookedTimes([...todaysUnavailableTimes, ...bookedHoursForDay])
+
+        // setBookedTimes([
+        //     new Date(2020, 3, 4, 13),
+        //     new Date(2020, 3, 4, 17)
+        // ])
     }
 
     return (
@@ -82,9 +96,9 @@ const SecondTimePicker = () => {
             <DatePicker
                 filterDate={isWeekday}
                 timeIntervals={60}
-                selected={startDate}
+                selected={selectedDate}
                 onChange={date => {
-                    setStartDate(date);
+                    setSelectedDate(date);
                     updateBookedTimes(date)
                 }}
                 showTimeSelect
@@ -97,7 +111,7 @@ const SecondTimePicker = () => {
             >
                 Book Lesson
             </button>
-            {console.log(unavailableTimes.one)}
+            {/* {console.log(unavailableTimes.one)} */}
         </div>
     );
 

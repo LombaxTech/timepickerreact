@@ -13,8 +13,8 @@ const bookings = [
         timeDetails: {
             year: 2020,
             month: 5,
-            day: 4,
-            hour: 16
+            day: 6,
+            hour: 19
         }
     },
     {
@@ -31,8 +31,8 @@ const bookings = [
         timeDetails: {
             year: 2020,
             month: 5,
-            day: 5,
-            hour: 15
+            day: 6,
+            hour: 16
         }
     },
     {
@@ -40,8 +40,35 @@ const bookings = [
         timeDetails: {
             year: 2020,
             month: 5,
-            day: 5,
+            day: 6,
             hour: 17
+        }
+    },
+    {
+        bookingId: 5,
+        timeDetails: {
+            year: 2020,
+            month: 5,
+            day: 11,
+            hour: 17
+        }
+    },
+    {
+        bookingId: 5,
+        timeDetails: {
+            year: 2020,
+            month: 5,
+            day: 11,
+            hour: 18
+        }
+    },
+    {
+        bookingId: 5,
+        timeDetails: {
+            year: 2020,
+            month: 5,
+            day: 11,
+            hour: 19
         }
     },
 ]
