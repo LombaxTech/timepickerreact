@@ -6,5 +6,6 @@
 [X] All Bookings
 [X] Current Bookings
 [X] Past Bookings
+
 [-] Cancelled Bookings collections, isRefunded field
 [-] 
