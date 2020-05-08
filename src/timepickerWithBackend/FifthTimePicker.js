@@ -5,15 +5,13 @@ import { setHours, setMinutes, addDays, subDays } from "date-fns";
 
 const FifthTimePicker = () => {
 
-    //* bookings: all bookings for the teacher through all days
-    //* bookedTimes: booked times on a given day
+    // * highlighted day on calendar, not important
+    const [selectedDate, setSelectedDate] = useState(
+        // setHours(setMinutes(new Date(), 0), 15)
+    );
 
-    const [values, setValues] = useState({
-        bookings: [],
-        bookedTimes: []
-    });
-
-    const { bookings, bookedTimes } = values;
+    const [bookings, setBookings] = useState([]);
+    const [bookedTimesForDay, setBookedTimesForDay] = useState([]);
 
     async function initializeBookings() {
         let response = await fetch('http://localhost:8000/api/bookings/SalKhan');
@@ -29,11 +27,10 @@ const FifthTimePicker = () => {
             return (booking.time.getDate() == new Date().getDate())
         });
 
-        setValues({
-            ...values,
-            bookings: bookingData,
-            bookedTimes: todaysBookings
-        });
+        setBookings(bookingData);
+        setBookedTimesForDay(todaysBookings);
+        setSelectedDate(setHours(setMinutes(new Date(), 0), 15))
+        updateBookedTimes(new Date())
     }
 
     useEffect(() => {
@@ -52,16 +49,8 @@ const FifthTimePicker = () => {
     // * uses getBookings to set values for the bookedTimes of the day 
     const updateBookedTimes = date => {
         let bookingsForDay = getBookings(date);
-        setValues({
-            ...values,
-            bookedTimes: bookingsForDay.map(booking => booking.time)
-        })
+        setBookedTimesForDay(bookingsForDay.map(booking => booking.time))
     }
-
-    // * highlighted day on calendar, not important
-    const [selectedDate, setSelectedDate] = useState(
-        setHours(setMinutes(new Date(), 0), 15)
-    );
 
     // * keeps only weekdays, not important
     const isWeekday = date => {
@@ -81,7 +70,7 @@ const FifthTimePicker = () => {
                 showTimeSelect
                 minDate={subDays(new Date(), 0)}
                 maxDate={addDays(new Date(), 13)}
-                excludeTimes={bookedTimes}
+                excludeTimes={bookedTimesForDay}
                 dateFormat="MMMM d, yyyy h:mm aa"
             />
             <button>
