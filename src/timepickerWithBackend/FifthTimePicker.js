@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { setHours, setMinutes, addDays, subDays } from "date-fns";
-// import { fetchBookings } from './timepickerApi'
-// import bookings from '../data/bookings2'
 
 const FifthTimePicker = () => {
+
+    //* bookings: all bookings for the teacher through all days
+    //* bookedTimes: booked times on a given day
 
     const [values, setValues] = useState({
         bookings: [],
@@ -17,16 +18,17 @@ const FifthTimePicker = () => {
     async function initializeBookings() {
         let response = await fetch('http://localhost:8000/api/bookings/SalKhan');
         let data = await response.json();
+
+        //* originally the each booking.time is a string so have to convert to date type
         let bookingData = data.map(booking => ({
             ...booking,
             time: new Date(booking.time)
         }))
 
-        // console.log(bookingData)
         let todaysBookings = bookingData.filter(booking => {
             return (booking.time.getDate() == new Date().getDate())
         });
-        // console.log(todaysBookings)
+
         setValues({
             ...values,
             bookings: bookingData,
@@ -38,41 +40,7 @@ const FifthTimePicker = () => {
         initializeBookings();
     }, [])
 
-    // * working
-    // const [bookings, setBookings] = useState([]);
-    // const [bookedTimes, setBookedTimes] = useState([]);
-
-
-    // async function fetchBookings() {
-    //     let response = await fetch('http://localhost:8000/api/bookings/SalKhan');
-    //     let data = await response.json();
-    //     let bookingData = data.map(booking => ({
-    //         ...booking,
-    //         time: new Date(booking.time)
-    //     }))
-    //     // setBookings(bookingData);
-
-    //     let todaysBookings = bookingData.filter(booking => {
-    //         return (booking.time.getDate() == new Date().getDate())
-    //     });
-    //     setBookings(bookingData);
-    //     // console.log(todaysBookings)
-    //     setBookedTimes(todaysBookings);
-
-    // }
-
-    // useEffect(() => {
-    //     fetchBookings();
-    // }, [])
-    // * working 
-
-    // const [bookedTimes, setBookedTimes] = useState(
-    //     todaysBookings.map(booking => booking.time)
-    // )
-
-
-    // console.log(bookedTimes);
-
+    // * returns the bookings as an array for a given date 
     let getBookings = date => {
         return bookings.filter(booking => (
             booking.time.getDate() === date.getDate() &&
@@ -81,19 +49,21 @@ const FifthTimePicker = () => {
         ))
     }
 
+    // * uses getBookings to set values for the bookedTimes of the day 
     const updateBookedTimes = date => {
         let bookingsForDay = getBookings(date);
         setValues({
             ...values,
             bookedTimes: bookingsForDay.map(booking => booking.time)
         })
-        // setBookedTimes(bookingsForDay.map(booking => booking.time))
     }
 
+    // * highlighted day on calendar, not important
     const [selectedDate, setSelectedDate] = useState(
         setHours(setMinutes(new Date(), 0), 15)
     );
 
+    // * keeps only weekdays, not important
     const isWeekday = date => {
         return date.getDay() != 0 && date.getDay() != 6
     }
@@ -107,19 +77,16 @@ const FifthTimePicker = () => {
                 onChange={date => {
                     setSelectedDate(date);
                     updateBookedTimes(date);
-                    console.log(bookedTimes)
                 }}
                 showTimeSelect
                 minDate={subDays(new Date(), 0)}
                 maxDate={addDays(new Date(), 13)}
-                excludeTimes={[...bookedTimes]}
+                excludeTimes={bookedTimes}
                 dateFormat="MMMM d, yyyy h:mm aa"
             />
-            <button
-            >
+            <button>
                 Book Lesson
             </button>
-            {/* {console.log(bookedTimes)} */}
         </div>
     );
 
@@ -130,7 +97,7 @@ export default FifthTimePicker;
 
 
 
-
+// ! NOT IMPORTANT CODE BELOW, WAS USED FOR OTHER TESTING
 
 
 // * setting unavailable times for today 
