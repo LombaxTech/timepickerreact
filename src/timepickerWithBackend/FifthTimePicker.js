@@ -7,30 +7,35 @@ import { setHours, setMinutes, addDays, subDays } from "date-fns";
 
 const FifthTimePicker = () => {
 
-    const [bookings, setBookings] = useState([]);
-    const [bookedTimes, setBookedTimes] = useState([]);
-    const [values, setValues]
+    const [values, setValues] = useState({
+        bookings: [],
+        bookedTimes: []
+    });
 
-    async function fetchBookings() {
+    const { bookings, bookedTimes } = values;
+
+    async function initializeBookings() {
         let response = await fetch('http://localhost:8000/api/bookings/SalKhan');
         let data = await response.json();
         let bookingData = data.map(booking => ({
             ...booking,
             time: new Date(booking.time)
         }))
-        // setBookings(bookingData);
 
+        // console.log(bookingData)
         let todaysBookings = bookingData.filter(booking => {
             return (booking.time.getDate() == new Date().getDate())
         });
-        setBookings(bookingData);
         // console.log(todaysBookings)
-        setBookedTimes(todaysBookings);
-
+        setValues({
+            ...values,
+            bookings: bookingData,
+            bookedTimes: todaysBookings
+        });
     }
 
     useEffect(() => {
-        fetchBookings();
+        initializeBookings();
     }, [])
 
     // * working
@@ -66,7 +71,7 @@ const FifthTimePicker = () => {
     // )
 
 
-    console.log(bookedTimes);
+    // console.log(bookedTimes);
 
     let getBookings = date => {
         return bookings.filter(booking => (
@@ -78,7 +83,11 @@ const FifthTimePicker = () => {
 
     const updateBookedTimes = date => {
         let bookingsForDay = getBookings(date);
-        setBookedTimes(bookingsForDay.map(booking => booking.time))
+        setValues({
+            ...values,
+            bookedTimes: bookingsForDay.map(booking => booking.time)
+        })
+        // setBookedTimes(bookingsForDay.map(booking => booking.time))
     }
 
     const [selectedDate, setSelectedDate] = useState(
@@ -98,6 +107,7 @@ const FifthTimePicker = () => {
                 onChange={date => {
                     setSelectedDate(date);
                     updateBookedTimes(date);
+                    console.log(bookedTimes)
                 }}
                 showTimeSelect
                 minDate={subDays(new Date(), 0)}
@@ -109,7 +119,7 @@ const FifthTimePicker = () => {
             >
                 Book Lesson
             </button>
-            {/* {console.log(bookings)} */}
+            {/* {console.log(bookedTimes)} */}
         </div>
     );
 
