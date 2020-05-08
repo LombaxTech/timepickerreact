@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
 import './App.css';
 import TimePicker from './timepickers/TimePicker'
-import SecondTimePicker from './timepickers/SecondTimePicker'
-import ThirdTimePicker from './timepickers/ThirdTimePicker'
-import FourthTimePicker from './timepickers/FourthTimePicker'
-import AllBookings from './bookings/AllBookings'
 import CurrentBookings from './bookings/CurrentBookings'
 import PastBookings from './bookings/PastBookings'
 import FifthTimePicker from './timepickerWithBackend/FifthTimePicker'
-
+import AllBookings from './bookingsWithApi/AllBookings'
 
 // * Timepicker using mock data only
 // const App = () => (
@@ -24,6 +20,7 @@ import FifthTimePicker from './timepickerWithBackend/FifthTimePicker'
 const App = () => (
 	<div>
 		<FifthTimePicker />
+		<AllBookings />
 	</div>
 )
 
