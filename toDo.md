@@ -11,4 +11,7 @@
 [-] Cancel bookings
 
 [-] include Are you sure, delete
+[-] Notifications
+[-] Emails 
+
 [-] GSAP, Flex, Animations, Videos
