@@ -2,69 +2,88 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { setHours, setMinutes, addDays, subDays } from "date-fns";
-
+// import { fetchBookings } from './timepickerApi'
 // import bookings from '../data/bookings2'
-
-
-// let getBookings = date => {
-//     return bookings.filter(booking => (
-//         booking.time.getDate() === date.getDate() &&
-//         booking.time.getMonth() === date.getMonth() &&
-//         booking.time.getFullYear() === date.getFullYear()
-//     ))
-// }
 
 const FifthTimePicker = () => {
 
-    let [bookings, setBookings] = useState([]);
+    const [bookings, setBookings] = useState([]);
+    const [bookedTimes, setBookedTimes] = useState([]);
+    const [values, setValues]
+
+    async function fetchBookings() {
+        let response = await fetch('http://localhost:8000/api/bookings/SalKhan');
+        let data = await response.json();
+        let bookingData = data.map(booking => ({
+            ...booking,
+            time: new Date(booking.time)
+        }))
+        // setBookings(bookingData);
+
+        let todaysBookings = bookingData.filter(booking => {
+            return (booking.time.getDate() == new Date().getDate())
+        });
+        setBookings(bookingData);
+        // console.log(todaysBookings)
+        setBookedTimes(todaysBookings);
+
+    }
 
     useEffect(() => {
-        async function fetchBookings() {
-            let response = await fetch('http://localhost:8000/api/bookings/SalKhan');
-            let data = await response.json();
-            setBookings(data);
-        }
         fetchBookings();
     }, [])
 
-    // if (bookings[1]) {
-    //     console.log(bookings[1].time)
-    //     console.log(typeof bookings[1].time)
-    //     console.log(new Date(bookings[1].time).getDay())
-    //     console.log(typeof new Date(bookings[1].time))
+    // * working
+    // const [bookings, setBookings] = useState([]);
+    // const [bookedTimes, setBookedTimes] = useState([]);
+
+
+    // async function fetchBookings() {
+    //     let response = await fetch('http://localhost:8000/api/bookings/SalKhan');
+    //     let data = await response.json();
+    //     let bookingData = data.map(booking => ({
+    //         ...booking,
+    //         time: new Date(booking.time)
+    //     }))
+    //     // setBookings(bookingData);
+
+    //     let todaysBookings = bookingData.filter(booking => {
+    //         return (booking.time.getDate() == new Date().getDate())
+    //     });
+    //     setBookings(bookingData);
+    //     // console.log(todaysBookings)
+    //     setBookedTimes(todaysBookings);
+
     // }
 
-    if (bookings.length > 0) {
-        bookings = bookings.map(booking => {
-            return ({
-                ...booking,
-                time: new Date(booking.time)
-            })
-        })
-
-        bookings.forEach((booking) => {
-            console.log(`booking year is ${booking.time.getFullYear()}`)
-        })
-    }
-
-    // let todaysBookings = bookings.filter(booking => {
-    //     return (booking.time.getDate() == new Date().getDate())
-    // })
-
-    const [selectedDate, setSelectedDate] = useState(
-        setHours(setMinutes(new Date(), 0), 15)
-    );
+    // useEffect(() => {
+    //     fetchBookings();
+    // }, [])
+    // * working 
 
     // const [bookedTimes, setBookedTimes] = useState(
     //     todaysBookings.map(booking => booking.time)
     // )
 
-    // const updateBookedTimes = date => {
-    //     let bookingsForDay = getBookings(date);
-    //     setBookedTimes(bookingsForDay.map(booking => booking.time))
-    // }
 
+    console.log(bookedTimes);
 
+    let getBookings = date => {
+        return bookings.filter(booking => (
+            booking.time.getDate() === date.getDate() &&
+            booking.time.getMonth() === date.getMonth() &&
+            booking.time.getFullYear() === date.getFullYear()
+        ))
+    }
+
+    const updateBookedTimes = date => {
+        let bookingsForDay = getBookings(date);
+        setBookedTimes(bookingsForDay.map(booking => booking.time))
+    }
+
+    const [selectedDate, setSelectedDate] = useState(
+        setHours(setMinutes(new Date(), 0), 15)
+    );
 
     const isWeekday = date => {
         return date.getDay() != 0 && date.getDay() != 6
@@ -78,11 +97,12 @@ const FifthTimePicker = () => {
                 selected={selectedDate}
                 onChange={date => {
                     setSelectedDate(date);
+                    updateBookedTimes(date);
                 }}
                 showTimeSelect
                 minDate={subDays(new Date(), 0)}
                 maxDate={addDays(new Date(), 13)}
-                excludeTimes={[]}
+                excludeTimes={[...bookedTimes]}
                 dateFormat="MMMM d, yyyy h:mm aa"
             />
             <button
