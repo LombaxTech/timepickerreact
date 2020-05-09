@@ -14,7 +14,7 @@ const FifthTimePicker = () => {
     const [bookedTimesForDay, setBookedTimesForDay] = useState([]);
 
     async function initializeBookings() {
-        let response = await fetch('http://localhost:8000/api/bookings/SalKhan');
+        let response = await fetch('http://localhost:8000/api/bookings/DonaldSadoway');
         let data = await response.json();
 
         //* originally the each booking.time is a string so have to convert to date type
@@ -57,6 +57,26 @@ const FifthTimePicker = () => {
         return date.getDay() != 0 && date.getDay() != 6
     }
 
+    const bookLesson = async () => {
+        try {
+            let response = await fetch('http://localhost:8000/api/booking/John/DonaldSadoway', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    subject: 'Solid State Chemistry',
+                    time: selectedDate
+                })
+            });
+            response = await response.json();
+            console.log(response);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     return (
         <div>
             <DatePicker
@@ -66,6 +86,7 @@ const FifthTimePicker = () => {
                 onChange={date => {
                     setSelectedDate(date);
                     updateBookedTimes(date);
+                    console.log(`selected date is: ${selectedDate}`);
                 }}
                 showTimeSelect
                 minDate={subDays(new Date(), 0)}
@@ -73,7 +94,7 @@ const FifthTimePicker = () => {
                 excludeTimes={bookedTimesForDay}
                 dateFormat="MMMM d, yyyy h:mm aa"
             />
-            <button>
+            <button onClick={bookLesson}>
                 Book Lesson
             </button>
         </div>

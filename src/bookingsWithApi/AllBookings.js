@@ -12,12 +12,17 @@ const AllBookings = () => {
             ...booking,
             time: new Date(booking.time)
         }))
-        setBookings(bookingData);
+        const sortedBookings = bookingData.slice().sort((a, b) => a.time - b.time)
+        setBookings(sortedBookings);
     }
 
     useEffect(() => {
         initializeBookings();
     }, [])
+
+    const deleteBooking = e => {
+        console.log(`key is: ${e.target.getAttribute("data-index")}`)
+    }
 
     return (
         <div>
@@ -25,7 +30,13 @@ const AllBookings = () => {
             <ul>
                 {bookings.map(booking => (
                     <li key={booking._id}>
-                        {booking.time.getDate()}/{booking.time.getMonth()}/{booking.time.getFullYear()}, {booking.time.getHours()}:00, {booking.studentName}, {booking.subject}, notesButton, cancelButton
+                        {booking.time.getDate()}/{booking.time.getMonth()}/{booking.time.getFullYear()}, {booking.time.getHours()}:00, {booking.studentName}, {booking.subject}, notesButton
+                        <button
+                            data-index={booking._id}
+                            onClick={deleteBooking}
+                        >
+                            Cancel Booking
+                        </button>
                     </li>
                 ))}
             </ul>
