@@ -9,7 +9,12 @@
 [-] Change bookings to past bookings when time passes
 [X] Create booking
 [-] Reload after booking creation
-[-] Cancel bookings
+[X] Cancel bookings
+
+[-] Selected date not to be an unavailable date
+[-] Filter out unavailable dates
+[-] Tutor to choose regular unavailable times 
+[-] Tutor functionality to choose unavailable dates and times 
 
 [-] In student detail, instead of student name, have student details looks like {
     studentName: ''
@@ -24,3 +29,4 @@
 
 [-] Refactoring and file seperating code 
 [-] GSAP, Flex, Animations, Videos
+

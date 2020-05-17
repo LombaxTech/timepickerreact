@@ -7,31 +7,47 @@ const FifthTimePicker = () => {
 
     // * highlighted day on calendar, not important
     const [selectedDate, setSelectedDate] = useState(
-        // setHours(setMinutes(new Date(), 0), 15)
     );
 
     const [bookings, setBookings] = useState([]);
     const [bookedTimesForDay, setBookedTimesForDay] = useState([]);
 
+    const [timeInterval, setTimeInterval] = useState(60)
+
     async function initializeBookings() {
         let response = await fetch('http://localhost:8000/api/bookings/DonaldSadoway');
-        let data = await response.json();
+        let bookingData = await response.json();
 
         //* originally the each booking.time is a string so have to convert to date type
-        let bookingData = data.map(booking => ({
+        bookingData = bookingData.map(booking => ({
             ...booking,
             time: new Date(booking.time)
         }))
 
-        let todaysBookings = bookingData.filter(booking => {
-            return (booking.time.getDate() == new Date().getDate())
-        });
+        let todaysBookings = bookingData.filter(booking => booking.time.getDate() == new Date().getDate())
 
         setBookings(bookingData);
         setBookedTimesForDay(todaysBookings);
+        console.log(todaysBookings);
+
+        // setTimeInterval(30);
+        // setBookedTimesForDay([
+        //     new Date(2020, 4, 9, 12),
+        //     new Date(2020, 4, 9, 13),
+        //     new Date(2020, 4, 9, 14)
+        // ]);
+
+        // setTimeout(() => {
+        //     setBookedTimesForDay([
+        //         new Date(2020, 4, 9, 12),
+        //         new Date(2020, 4, 9, 13),
+        //         new Date(2020, 4, 9, 14)
+        //     ]);
+        // }, 4000)
+
         setSelectedDate(setHours(setMinutes(new Date(), 0), 15))
-        updateBookedTimes(new Date())
     }
+
 
     useEffect(() => {
         initializeBookings();
@@ -49,20 +65,21 @@ const FifthTimePicker = () => {
     // * uses getBookings to set values for the bookedTimes of the day 
     const updateBookedTimes = date => {
         let bookingsForDay = getBookings(date);
+        // console.log(bookingsForDay)
         setBookedTimesForDay(bookingsForDay.map(booking => booking.time))
     }
 
     // * keeps only weekdays, not important
-    const isWeekday = date => {
-        return date.getDay() != 0 && date.getDay() != 6
-    }
+    // const isWeekday = date => {
+    //     return date.getDay() != 0 && date.getDay() != 6
+    // }
 
     const bookLesson = async () => {
         try {
-            let response = await fetch('http://localhost:8000/api/booking/John/DonaldSadoway', {
-                method: 'POST',
+            let response = await fetch('http://localhost:8000/api/booking/Thomas/SalKhan', {
+                method: "POST",
                 headers: {
-                    Accept: 'application/json',
+                    'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
@@ -73,20 +90,50 @@ const FifthTimePicker = () => {
             response = await response.json();
             console.log(response);
         } catch (err) {
-            console.log(err);
+            console.log(`error is: ${err}`);
         }
     }
 
+    // let [loading, setLoading] = useState(true);
+
+    // setTimeout(() => {
+    //     setLoading(false);
+    // }, 1000);
+
     return (
         <div>
+            {/* {loading && (
+                <h1>loading...</h1>
+            )
+            }
+
+            {!loading && (
+                <div>
+                    <DatePicker
+                        timeIntervals={timeInterval}
+                        selected={selectedDate}
+                        onChange={date => {
+                            setSelectedDate(date);
+                            updateBookedTimes(date);
+                        }}
+                        showTimeSelect
+                        minDate={subDays(new Date(), 0)}
+                        maxDate={addDays(new Date(), 13)}
+                        excludeTimes={bookedTimesForDay}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                    />
+                    <button onClick={bookLesson}>
+                        Book Lesson
+                    </button>
+                </div>
+            )} */}
+
             <DatePicker
-                filterDate={isWeekday}
-                timeIntervals={60}
+                timeIntervals={timeInterval}
                 selected={selectedDate}
                 onChange={date => {
                     setSelectedDate(date);
                     updateBookedTimes(date);
-                    console.log(`selected date is: ${selectedDate}`);
                 }}
                 showTimeSelect
                 minDate={subDays(new Date(), 0)}
@@ -97,6 +144,8 @@ const FifthTimePicker = () => {
             <button onClick={bookLesson}>
                 Book Lesson
             </button>
+            {/* {console.log(`selected date is: ${selectedDate}`)} */}
+            {/* {console.log(bookedTimesForDay)} */}
         </div>
     );
 
